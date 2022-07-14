@@ -10,8 +10,7 @@ bun add @kingworldjs/cookie
 ## Example
 ```typescript
 import KingWorld from 'kingworld'
-
-import cookie from '../src/index'
+import cookie from '@kingworldjs/cookie'
 
 const app = new KingWorld<{
     store: {}
