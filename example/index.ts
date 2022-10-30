@@ -11,9 +11,17 @@ const app = new KingWorld<{
     }
 }>()
     .use(cookie)
-    .get('/', ({ cookie, setCookie, responseHeaders }) => {
+    .get('/', (a) => {
         setCookie(
             'counter',
+            cookie?.counter ? `${+cookie.counter + 1}`.toString() : `1`,
+            {
+                httpOnly: true
+            }
+        )
+
+        setCookie(
+            'counter2',
             cookie?.counter ? `${+cookie.counter + 1}`.toString() : `1`,
             {
                 httpOnly: true
