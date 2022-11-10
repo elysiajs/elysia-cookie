@@ -2,19 +2,12 @@ import KingWorld from 'kingworld'
 
 import cookie from '../src/index'
 
-const app = new KingWorld<{
-    store: {}
-    request: {
-        cookie: {
-            counter: string
-        }
-    }
-}>()
+const app = new KingWorld()
     .use(cookie)
-    .get('/', (a) => {
+    .get('/', ({ cookie, setCookie }) => {
         setCookie(
             'counter',
-            cookie?.counter ? `${+cookie.counter + 1}`.toString() : `1`,
+            cookie.counter ? `${+cookie.counter + 1}`.toString() : `1`,
             {
                 httpOnly: true
             }

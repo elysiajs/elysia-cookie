@@ -16,7 +16,7 @@ interface CookieRequest {
 const expires = new Date('Thu, Jan 01 1970 00:00:00 UTC')
 
 const cookie = (app: KingWorld) =>
-    app.transform((ctx) => {
+    app.onTransform((ctx) => {
         let _cookie: Record<string, string>
 
         const getCookie = () => {
@@ -41,7 +41,7 @@ const cookie = (app: KingWorld) =>
                 _cookie = newCookie
             },
             setCookie(name, value, options) {
-                ctx.responseHeaders['Set-Cookie'] = serialize(name, value, options)
+                ctx.set.headers['Set-Cookie'] = serialize(name, value, options)
 
                 if (!_cookie) getCookie()
                 _cookie[name] = value
@@ -49,7 +49,7 @@ const cookie = (app: KingWorld) =>
             removeCookie(name: string) {
                 if (!getCookie()[name]) return
 
-                ctx.responseHeaders['Set-Cookie'] = serialize(name, '', {
+                ctx.set.headers['Set-Cookie'] = serialize(name, '', {
                     expires
                 })
 

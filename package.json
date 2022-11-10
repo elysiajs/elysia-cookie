@@ -1,6 +1,6 @@
 {
   "name": "@kingworldjs/cookie",
-  "version": "0.0.0-experimental.1",
+  "version": "0.0.0-experimental.2",
   "description": "A plugin for kingworld that add supports for reading, and setting cookie",
   "author": {
     "name": "saltyAom",
@@ -35,7 +35,7 @@
     "cookie": "^0.5.0"
   },
   "peerDependencies": {
-    "kingworld": ">= 0.0.0-experimental.14"
+    "kingworld": ">= 0.0.0-experimental.40"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
@@ -45,7 +45,7 @@
     "@types/node": "^18.11.7",
     "bun-types": "^0.2.2",
     "eslint": "^8.26.0",
-    "kingworld": "0.0.0-experimental.28",
+    "kingworld": "0.0.0-experimental.40",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.4"
   }
