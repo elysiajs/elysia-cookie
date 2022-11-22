@@ -12,15 +12,8 @@ bun add @kingworldjs/cookie
 import KingWorld from 'kingworld'
 import cookie from '@kingworldjs/cookie'
 
-const app = new KingWorld<{
-    store: {}
-    request: {
-        cookie: {
-            user: string
-        }
-    }
-}>()
-    .use(cookie)
+const app = new KingWorld()
+    .use(cookie())
     .get('/', ({ cookie: { user }, setCookie, removeCookie }) => {
         if (user === 'admin') unsetCookie('user')
         if (!user)
