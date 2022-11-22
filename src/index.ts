@@ -3,7 +3,7 @@ import type { Handler } from 'kingworld'
 import type KingWorld from 'kingworld'
 import Cookie, { serialize, parse, type CookieSerializeOptions } from 'cookie'
 
-interface CookieRequest {
+export interface CookieRequest {
     cookie: Record<string, string>
     setCookie: (
         name: string,
@@ -13,9 +13,7 @@ interface CookieRequest {
     removeCookie: (name: string) => void
 }
 
-const expires = new Date('Thu, Jan 01 1970 00:00:00 UTC')
-
-const cookie = (app: KingWorld) =>
+export const cookie = () => (app: KingWorld) =>
     app.onTransform((ctx) => {
         let _cookie: Record<string, string>
 
@@ -41,7 +39,10 @@ const cookie = (app: KingWorld) =>
                 _cookie = newCookie
             },
             setCookie(name, value, options) {
-                ctx.set.headers['Set-Cookie'] = serialize(name, value, options)
+                ctx.set.headers['Set-Cookie'] = serialize(name, value, {
+                    path: '/',
+                    ...options
+                })
 
                 if (!_cookie) getCookie()
                 _cookie[name] = value
@@ -50,12 +51,16 @@ const cookie = (app: KingWorld) =>
                 if (!getCookie()[name]) return
 
                 ctx.set.headers['Set-Cookie'] = serialize(name, '', {
-                    expires
+                    expires: new Date('Thu, Jan 01 1970 00:00:00 UTC')
                 })
 
                 delete _cookie[name]
             }
         } as CookieRequest)
-    })
+    }) as unknown as KingWorld<{
+        store: {}
+        request: CookieRequest
+        schema: {}
+    }>
 
 export default cookie

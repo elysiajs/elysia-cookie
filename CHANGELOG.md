@@ -1,3 +1,7 @@
+# 0.0.0-experimental.3 - 22 Nov 2022
+Change:
+- Support for KingWorld 0.0.0-experimental.50 onward
+
 # 0.0.0-experimental.2 - 10 Nov 2022
 Change:
 - Support for KingWorld 0.0.0-experimental.40 onward
