@@ -1,3 +1,10 @@
+# 0.0.0-experimental.4 - 2 Dec 2022
+Feature:
+- Implemented sign cookie
+
+Change:
+- Support for KingWorld 0.0.0-experimental.55 onward
+
 # 0.0.0-experimental.3 - 22 Nov 2022
 Change:
 - Support for KingWorld 0.0.0-experimental.50 onward

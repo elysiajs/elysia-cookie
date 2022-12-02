@@ -53,4 +53,57 @@ describe('Cookie', () => {
         const res = await app.handle(req('/'))
         expect(res.headers.get('set-cookie')).toBe(null)
     })
+
+    it('sign cookie', async () => {
+        const app = new KingWorld()
+            .use(
+                cookie({
+                    secret: 'Takodachi'
+                })
+            )
+            .get('/', ({ setCookie }) => {
+                setCookie('name', 'saltyaom', {
+                    signed: true
+                })
+
+                return 'unset'
+            })
+
+        const res = await app.handle(req('/'))
+        expect(res.headers.get('set-cookie')?.includes('.')).toBe(true)
+    })
+
+    it('unsign cookie', async () => {
+        const app = new KingWorld()
+            .use(
+                cookie({
+                    secret: 'Takodachi'
+                })
+            )
+            .get('/', ({ setCookie }) => {
+                setCookie('name', 'saltyaom', {
+                    signed: true
+                })
+
+                return 'unset'
+            })
+            .get('/unsign', ({ cookie, unsignCookie }) => {
+                const { valid, value } = unsignCookie(cookie.name)
+
+                return value
+            })
+
+        const authen = await app.handle(req('/'))
+        const res = await app
+            .handle(
+                new Request('/unsign', {
+                    headers: {
+                        cookie: authen.headers.get('set-cookie') ?? ''
+                    }
+                })
+            )
+            .then((r) => r.text())
+
+        expect(res).toBe('saltyaom')
+    })
 })
