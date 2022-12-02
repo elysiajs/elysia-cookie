@@ -16,7 +16,13 @@ const app = new KingWorld()
 
         return cookie.counter
     })
+    .get('/sign-out', ({ cookie, removeCookie }) => {
+        removeCookie('name')
+
+        return 'signed out'
+    })
     .get('/cookie', ({ cookie }) => (cookie.biscuit = 'tea'))
+
     .get('/sign/:name', ({ params: { name }, cookie, setCookie }) => {
         setCookie('name', name, {
             signed: true
@@ -24,30 +30,14 @@ const app = new KingWorld()
 
         return name
     })
-    .get('/sign-out', ({ cookie, removeCookie }) => {
-        removeCookie('name')
+    .get('/auth', ({ unsignCookie, cookie: { name }, set }) => {
+        const { valid, value } = unsignCookie(name)
 
-        return 'signed out'
-    })
-    .get(
-        '/auth',
-        ({ unsignCookie, cookie: { name }, set }) => {
-            const { valid, value } = unsignCookie(name)
-
-            if (!valid) {
-                set.status = 401
-                return 'Unauthorized'
-            }
-
-            return value
-        },
-        {
-            beforeHandle({ cookie, set }) {
-                if (!cookie.name) {
-                    set.status = 401
-                    return 'Unauthorized'
-                }
-            }
+        if (!valid) {
+            set.status = 401
+            return 'Unauthorized'
         }
-    )
+
+        return value
+    })
     .listen(8080)
