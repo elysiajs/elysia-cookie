@@ -1,3 +1,8 @@
+# 0.0.0-experimental.5 - 2 Dec 2022
+Improvement:
+- set `unsignCookie` to `decorate` instead of `inject`
+- Remove redundant import
+
 # 0.0.0-experimental.4 - 2 Dec 2022
 Feature:
 - Implemented sign cookie
