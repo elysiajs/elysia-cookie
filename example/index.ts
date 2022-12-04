@@ -22,7 +22,6 @@ const app = new KingWorld()
         return 'signed out'
     })
     .get('/cookie', ({ cookie }) => (cookie.biscuit = 'tea'))
-
     .get('/sign/:name', ({ params: { name }, cookie, setCookie }) => {
         setCookie('name', name, {
             signed: true

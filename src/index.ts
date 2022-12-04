@@ -1,4 +1,4 @@
-import type { KingWorld, Handler } from 'kingworld'
+import type { Elysia, Handler } from 'elysia'
 
 import { serialize, parse, type CookieSerializeOptions } from 'cookie'
 import { sign } from 'cookie-signature'
@@ -39,7 +39,7 @@ const unsign = (input: string, secret: string | null) => {
 
 export const cookie =
     ({ signed, secret: secretKey, ...defaultOptions }: CookieOptions = {}) =>
-    (app: KingWorld) => {
+    (app:  Elysia) => {
         const secret = !secretKey
             ? undefined
             : typeof secretKey === 'string'

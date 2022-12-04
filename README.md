@@ -1,6 +1,6 @@
 # @kingworldjs/cookie
 
-A plugin for [kingworld](https://github.com/saltyaom/kingworld) that add supports for reading, and setting cookie.
+A plugin for [kingworld](https://github.com/elysiajs/elysia) that add supports for reading, and setting cookie.
 
 ## Installation
 ```bash
@@ -9,8 +9,8 @@ bun add @kingworldjs/cookie
 
 ## Example
 ```typescript
-import KingWorld from 'kingworld'
-import cookie from '@kingworldjs/cookie'
+import { KingWorld } from 'kingworld'
+import { cookie } from '@kingworldjs/cookie'
 
 const app = new KingWorld()
     .use(cookie())
@@ -47,6 +47,12 @@ setCookie: (
 A function to remove cookie
 ```typescript
 removeCookie: (name: string) => void
+```
+
+### unsignCookie
+Unsign cookie
+```typescript
+unsignCookie: (name: string) => void
 ```
 
 ### Serialize Options
