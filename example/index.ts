@@ -1,8 +1,7 @@
-import KingWorld from 'kingworld'
-
+import { Elysia } from 'elysia'
 import { cookie } from '../src/index'
 
-const app = new KingWorld()
+const app = new Elysia()
     .use(
         cookie({
             secret: 'abc'
