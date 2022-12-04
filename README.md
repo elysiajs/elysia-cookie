@@ -1,18 +1,18 @@
-# @kingworldjs/cookie
+# @elysiajs/cookie
 
-A plugin for [kingworld](https://github.com/elysiajs/elysia) that add supports for reading, and setting cookie.
+A plugin for [elysia](https://github.com/elysiajs/elysia) that add supports for reading, and setting cookie.
 
 ## Installation
 ```bash
-bun add @kingworldjs/cookie
+bun add @elysiajs/cookie
 ```
 
 ## Example
 ```typescript
-import { KingWorld } from 'kingworld'
-import { cookie } from '@kingworldjs/cookie'
+import { Elysia } from 'elysia'
+import { cookie } from '@elysiajs/cookie'
 
-const app = new KingWorld()
+const app = new Elysia()
     .use(cookie())
     .get('/', ({ cookie: { user }, setCookie, removeCookie }) => {
         if (user === 'admin') unsetCookie('user')
