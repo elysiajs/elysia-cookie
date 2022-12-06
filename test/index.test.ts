@@ -1,6 +1,5 @@
-import KingWorld from 'kingworld'
-
-import cookie from '../src'
+import { Elysia } from 'elysia'
+import { cookie } from '../src'
 
 import { describe, expect, it } from 'bun:test'
 
@@ -8,7 +7,7 @@ const req = (path: string) => new Request(path)
 
 describe('Cookie', () => {
     it('should set cookie', async () => {
-        const app = new KingWorld()
+        const app = new Elysia()
             .use(cookie())
             .get('/', ({ cookie: { user }, setCookie }) => {
                 setCookie('user', 'saltyaom')
@@ -21,7 +20,7 @@ describe('Cookie', () => {
     })
 
     it('should remove cookie', async () => {
-        const app = new KingWorld()
+        const app = new Elysia()
             .use(cookie())
             .get('/', ({ removeCookie }) => {
                 removeCookie('user')
@@ -42,7 +41,7 @@ describe('Cookie', () => {
     })
 
     it('skip cookie removal if cookie is absent', async () => {
-        const app = new KingWorld()
+        const app = new Elysia()
             .use(cookie())
             .get('/', ({ removeCookie }) => {
                 removeCookie('user')
@@ -55,7 +54,7 @@ describe('Cookie', () => {
     })
 
     it('sign cookie', async () => {
-        const app = new KingWorld()
+        const app = new Elysia()
             .use(
                 cookie({
                     secret: 'Takodachi'
@@ -74,7 +73,7 @@ describe('Cookie', () => {
     })
 
     it('unsign cookie', async () => {
-        const app = new KingWorld()
+        const app = new Elysia()
             .use(
                 cookie({
                     secret: 'Takodachi'

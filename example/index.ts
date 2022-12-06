@@ -8,6 +8,8 @@ const app = new Elysia()
         })
     )
     .get('/', ({ cookie, setCookie }) => {
+        console.log(cookie)
+
         setCookie(
             'counter',
             cookie.counter ? `${+cookie.counter + 1}`.toString() : `1`
