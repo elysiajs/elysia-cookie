@@ -1,6 +1,5 @@
 # @elysiajs/cookie
-
-Plugin for [elysia](https://github.com/elysiajs/elysia) that add supports for reading, and setting cookie.
+Plugin for [Elysia](https://github.com/elysiajs/elysia) that add support for reading, and setting cookie.
 
 ## Installation
 ```bash
