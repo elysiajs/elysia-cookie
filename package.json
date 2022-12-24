@@ -1,6 +1,6 @@
 {
   "name": "@elysiajs/cookie",
-  "version": "0.1.0-rc.8",
+  "version": "0.1.0",
   "description": "Plugin for Elysia that add supports for get/set cookie",
   "author": {
     "name": "saltyAom",
