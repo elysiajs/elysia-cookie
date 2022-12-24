@@ -1,7 +1,7 @@
 import type { Elysia, Handler } from 'elysia'
 
 import { serialize, parse, type CookieSerializeOptions } from 'cookie'
-import { sign } from 'cookie-signature'
+import { sign, unsign } from 'cookie-signature'
 
 export interface SetCookieOptions extends CookieSerializeOptions {
     // Should cookie be signed or not
@@ -24,17 +24,6 @@ export interface CookieRequest {
     cookie: Record<string, string>
     setCookie: (name: string, value: string, options?: SetCookieOptions) => void
     removeCookie: (name: string) => void
-}
-
-// ? Bun doesn't support `crypto.timingSafeEqual` yet, using string equality instead
-// Temporary fix until native support
-const unsign = (input: string, secret: string | null) => {
-    if (secret === null) throw new TypeError('Secret key must be provided')
-    if (!input) return false
-
-    const value = input.slice(0, input.lastIndexOf('.'))
-
-    return sign(value, secret) === input ? value : false
 }
 
 export const cookie =
