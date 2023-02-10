@@ -1,3 +1,10 @@
+# 0.1.1 - 10 Deb 2023
+Improvement:
+- Add support for setting multiple cookie
+
+Change:
+- Minimum requirement for Elysia is 0.2.6
+
 # 0.1.0-rc.8 - 13 Dec 2022
 Improvement:
 - Use `cookie.unsign` which use `crypto.timingSafeEqual` as Bun 0.4.0 supports

@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia'
-import { cookie } from '../src/index'
+import { cookie } from '../src'
 
 const app = new Elysia()
     .use(
@@ -23,6 +23,12 @@ const app = new Elysia()
         return 'signed out'
     })
     .get('/cookie', ({ cookie }) => (cookie.biscuit = 'tea'))
+    .get('/multi', ({ cookie, setCookie }) => {
+        setCookie('a', 'b')
+        setCookie('c', 'd')
+
+        return cookie
+    })
     .get('/sign/:name', ({ params: { name }, cookie, setCookie }) => {
         setCookie('name', name, {
             signed: true

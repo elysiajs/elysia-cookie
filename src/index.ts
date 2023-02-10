@@ -28,7 +28,7 @@ export interface CookieRequest {
 
 export const cookie =
     ({ signed, secret: secretKey, ...defaultOptions }: CookieOptions = {}) =>
-    (app:  Elysia) => {
+    (app: Elysia) => {
         const secret = !secretKey
             ? undefined
             : typeof secretKey === 'string'
@@ -105,14 +105,17 @@ export const cookie =
                             value = sign(value, secret)
                         }
 
-                        context.set.headers['Set-Cookie'] = serialize(
-                            name,
-                            value,
-                            {
+                        if (!context.set.headers['Set-Cookie'])
+                            // @ts-ignore
+                            context.set.headers['Set-Cookie'] = []
+
+                        // @ts-ignore
+                        context.set.headers['Set-Cookie'].push(
+                            serialize(name, value, {
                                 path: '/',
                                 ...defaultOptions,
                                 ...options
-                            }
+                            })
                         )
 
                         if (!_cookie) getCookie()

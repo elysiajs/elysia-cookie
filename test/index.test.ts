@@ -3,7 +3,7 @@ import { cookie } from '../src'
 
 import { describe, expect, it } from 'bun:test'
 
-const req = (path: string) => new Request(path)
+const req = (path: string) => new Request(`http://localhost:8080${path}`)
 
 describe('Cookie', () => {
     it('should set cookie', async () => {
@@ -20,16 +20,14 @@ describe('Cookie', () => {
     })
 
     it('should remove cookie', async () => {
-        const app = new Elysia()
-            .use(cookie())
-            .get('/', ({ removeCookie }) => {
-                removeCookie('user')
+        const app = new Elysia().use(cookie()).get('/', ({ removeCookie }) => {
+            removeCookie('user')
 
-                return 'unset'
-            })
+            return 'unset'
+        })
 
         const res = await app.handle(
-            new Request('/', {
+            new Request('http://localhost/', {
                 headers: {
                     cookie: 'user=saltyaom'
                 }
@@ -41,13 +39,11 @@ describe('Cookie', () => {
     })
 
     it('skip cookie removal if cookie is absent', async () => {
-        const app = new Elysia()
-            .use(cookie())
-            .get('/', ({ removeCookie }) => {
-                removeCookie('user')
+        const app = new Elysia().use(cookie()).get('/', ({ removeCookie }) => {
+            removeCookie('user')
 
-                return 'unset'
-            })
+            return 'unset'
+        })
 
         const res = await app.handle(req('/'))
         expect(res.headers.get('set-cookie')).toBe(null)
@@ -95,7 +91,7 @@ describe('Cookie', () => {
         const authen = await app.handle(req('/'))
         const res = await app
             .handle(
-                new Request('/unsign', {
+                new Request('http://localhost:8080/unsign', {
                     headers: {
                         cookie: authen.headers.get('set-cookie') ?? ''
                     }
@@ -104,5 +100,19 @@ describe('Cookie', () => {
             .then((r) => r.text())
 
         expect(res).toBe('saltyaom')
+    })
+
+    it('should set multiple', async () => {
+        const app = new Elysia()
+            .use(cookie())
+            .get('/', ({ cookie: { user }, setCookie }) => {
+                setCookie('a', 'b')
+                setCookie('c', 'd')
+
+                return user
+            })
+
+        const res = await app.handle(req('/'))
+        expect(res.headers.getAll('Set-Cookie')).toEqual(['a=b; Path=/', 'c=d; Path=/'])
     })
 })
