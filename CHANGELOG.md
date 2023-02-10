@@ -1,4 +1,4 @@
-# 0.1.1 - 10 Deb 2023
+# 0.1.1 - 10 Feb 2023
 Improvement:
 - Add support for setting multiple cookie
 
