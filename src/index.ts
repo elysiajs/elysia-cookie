@@ -105,7 +105,7 @@ export const cookie =
                             value = sign(value, secret)
                         }
 
-                        if (!context.set.headers['Set-Cookie'])
+                        if (!Array.isArray(context.set.headers['Set-Cookie']))
                             // @ts-ignore
                             context.set.headers['Set-Cookie'] = []
 
