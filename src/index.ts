@@ -69,7 +69,7 @@ export const cookie =
                       valid: false
                       value: undefined
                   })
-            .inject((context) => {
+            .derive((context) => {
                 let _cookie: Record<string, string>
 
                 const getCookie = () => {
