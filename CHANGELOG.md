@@ -1,3 +1,7 @@
+# 0.3.0 - 17 Mar 2023
+Improvement:
+- Minimum requirement is set to >= 0.3.0
+
 # 0.3.0-rc.0 - 9 Mar 2023
 Improvement:
 - Minimum requirement is set to >= 0.3.0-rc.3
