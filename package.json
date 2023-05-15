@@ -1,6 +1,6 @@
 {
   "name": "@elysiajs/cookie",
-  "version": "0.3.0",
+  "version": "0.5.0-rc.0",
   "description": "Plugin for Elysia that add supports for get/set cookie",
   "author": {
     "name": "saltyAom",
@@ -29,24 +29,24 @@
   "scripts": {
     "dev": "bun run --hot example/index.ts",
     "test": "bun wiptest",
-    "build": "rimraf dist && tsc --project tsconfig.esm.json",
+    "build": "rimraf dist && tsc --project tsconfig.esm.json && tsc --project tsconfig.cjs.json",
     "release": "npm run build && npm run test && npm publish --access public"
   },
   "dependencies": {
     "@types/cookie": "^0.5.1",
-    "@types/cookie-signature": "^1.0.4",
+    "@types/cookie-signature": "^1.1.0",
     "cookie": "^0.5.0",
-    "cookie-signature": "^1.2.0"
+    "cookie-signature": "^1.2.1"
   },
   "peerDependencies": {
-    "elysia": ">= 0.3.0"
+    "elysia": ">= 0.5.0-beta.3"
   },
   "devDependencies": {
-    "@types/node": "^18.11.7",
-    "bun-types": "^0.5.7",
-    "elysia": "0.3.0",
-    "eslint": "^8.26.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.9.4"
+    "@types/node": "^20.1.4",
+    "bun-types": "^0.5.8",
+    "elysia": "0.5.0-beta.3",
+    "eslint": "^8.40.0",
+    "rimraf": "4.3",
+    "typescript": "^5.0.4"
   }
 }
