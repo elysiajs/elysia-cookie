@@ -1,4 +1,4 @@
-import type { Elysia, Handler } from 'elysia'
+import { Elysia, Handler } from 'elysia'
 
 import { serialize, parse, type CookieSerializeOptions } from 'cookie'
 import { sign, unsign } from 'cookie-signature'
@@ -26,118 +26,112 @@ export interface CookieRequest {
     removeCookie: (name: string) => void
 }
 
-export const cookie =
-    ({ signed, secret: secretKey, ...defaultOptions }: CookieOptions = {}) =>
-    (app: Elysia) => {
-        const secret = !secretKey
-            ? undefined
-            : typeof secretKey === 'string'
-            ? secretKey
-            : secretKey[0]
+export const cookie = (options: CookieOptions = {}) => {
+    const { signed, secret: secretKey, ...defaultOptions } = options
 
-        const isStringKey = typeof secret === 'string'
+    const secret = !secretKey
+        ? undefined
+        : typeof secretKey === 'string'
+        ? secretKey
+        : secretKey[0]
 
-        return app
-            .decorate('unsignCookie', ((value: string) => {
-                if (!secret)
-                    throw new Error('No secret is provided to cookie plugin')
+    const isStringKey = typeof secret === 'string'
 
-                let unsigned: false | string = isStringKey
-                    ? unsign(value, secret)
-                    : false
+    return new Elysia({
+        // For deduplication to work you need to define a plugin name (or anything)
+        name: '@elysiajs/cookie',
+        // (optional) define seed, if not provided plugin will only be defined once
+        seed: options
+    })
+        .decorate('unsignCookie', ((value: string) => {
+            if (!secret)
+                throw new Error('No secret is provided to cookie plugin')
 
-                if (isStringKey === false)
-                    for (let i = 0; i < secret.length; i++) {
-                        const temp = unsign(value, secret[i])
+            let unsigned: false | string = isStringKey
+                ? unsign(value, secret)
+                : false
 
-                        if (temp) {
-                            unsigned = temp
-                            break
-                        }
+            if (isStringKey === false)
+                for (let i = 0; i < secret.length; i++) {
+                    const temp = unsign(value, secret[i])
+
+                    if (temp) {
+                        unsigned = temp
+                        break
                     }
-
-                return {
-                    valid: unsigned !== false,
-                    value: unsigned || undefined
-                }
-            }) as (value: string) =>
-                | {
-                      valid: true
-                      value: string
-                  }
-                | {
-                      valid: false
-                      value: undefined
-                  })
-            .derive((context) => {
-                let _cookie: Record<string, string>
-
-                const getCookie = () => {
-                    if (_cookie) return _cookie
-
-                    try {
-                        const headerCookie =
-                            context.request.headers.get('cookie')
-
-                        _cookie = headerCookie ? parse(headerCookie) : {}
-                    } catch (error) {
-                        _cookie = {}
-                    }
-
-                    return _cookie
                 }
 
-                return {
-                    get cookie() {
-                        return getCookie()
-                    },
-                    setCookie(
-                        name,
-                        value,
-                        { signed = false, ...options } = {}
-                    ) {
-                        if (signed) {
-                            if (!secret)
-                                throw new Error(
-                                    'No secret is provided to cookie plugin'
-                                )
+            return {
+                valid: unsigned !== false,
+                value: unsigned || undefined
+            }
+        }) as (value: string) =>
+            | {
+                  valid: true
+                  value: string
+              }
+            | {
+                  valid: false
+                  value: undefined
+              })
+        .derive((context) => {
+            let _cookie: Record<string, string>
 
-                            value = sign(value, secret)
-                        }
+            const getCookie = () => {
+                if (_cookie) return _cookie
 
-                        if (!Array.isArray(context.set.headers['Set-Cookie']))
-                            // @ts-ignore
-                            context.set.headers['Set-Cookie'] = []
+                try {
+                    const headerCookie = context.request.headers.get('cookie')
 
+                    _cookie = headerCookie ? parse(headerCookie) : {}
+                } catch (error) {
+                    _cookie = {}
+                }
+
+                return _cookie
+            }
+
+            return {
+                get cookie() {
+                    return getCookie()
+                },
+                setCookie(name, value, { signed = false, ...options } = {}) {
+                    if (signed) {
+                        if (!secret)
+                            throw new Error(
+                                'No secret is provided to cookie plugin'
+                            )
+
+                        value = sign(value, secret)
+                    }
+
+                    if (!Array.isArray(context.set.headers['Set-Cookie']))
                         // @ts-ignore
-                        context.set.headers['Set-Cookie'].push(
-                            serialize(name, value, {
-                                path: '/',
-                                ...defaultOptions,
-                                ...options
-                            })
-                        )
+                        context.set.headers['Set-Cookie'] = []
 
-                        if (!_cookie) getCookie()
-                        _cookie[name] = value
-                    },
-                    removeCookie(name: string) {
-                        if (!getCookie()[name]) return
+                    // @ts-ignore
+                    context.set.headers['Set-Cookie'].push(
+                        serialize(name, value, {
+                            path: '/',
+                            ...defaultOptions,
+                            ...options
+                        })
+                    )
 
-                        context.set.headers['Set-Cookie'] = serialize(
-                            name,
-                            '',
-                            {
-                                expires: new Date(
-                                    'Thu, Jan 01 1970 00:00:00 UTC'
-                                )
-                            }
-                        )
+                    if (!_cookie) getCookie()
+                    _cookie[name] = value
+                },
+                removeCookie(name: string) {
+                    if (!getCookie()[name]) return
 
-                        delete _cookie[name]
-                    }
-                } as CookieRequest
-            })
-    }
+                    context.set.headers['Set-Cookie'] = serialize(name, '', {
+                        expires: new Date('Thu, Jan 01 1970 00:00:00 UTC')
+                    })
+
+                    delete _cookie[name]
+                }
+            } as CookieRequest
+        })
+}
 
 export default cookie

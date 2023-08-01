@@ -1,6 +1,6 @@
 {
   "name": "@elysiajs/cookie",
-  "version": "0.5.2",
+  "version": "0.6.0-beta.0",
   "description": "Plugin for Elysia that add supports for get/set cookie",
   "author": {
     "name": "saltyAom",
@@ -41,12 +41,12 @@
     "cookie-signature": "^1.2.1"
   },
   "peerDependencies": {
-    "elysia": ">= 0.5.12"
+    "elysia": ">= 0.6.0-alpha.3"
   },
   "devDependencies": {
     "@types/node": "^20.1.4",
-    "bun-types": "^0.5.8",
-    "elysia": "0.5.12",
+    "bun-types": "^0.7.0",
+    "elysia": "^0.6.0-alpha.4",
     "eslint": "^8.40.0",
     "rimraf": "4.3",
     "typescript": "^5.0.4"
