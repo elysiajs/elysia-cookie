@@ -125,7 +125,10 @@ export const cookie = (options: CookieOptions = {}) => {
                     if (!getCookie()[name]) return
 
                     context.set.headers['Set-Cookie'] = serialize(name, '', {
-                        expires: new Date('Thu, Jan 01 1970 00:00:00 UTC')
+                        path: '/',
+                        expires: new Date('Thu, Jan 01 1970 00:00:00 UTC'),
+                        ...defaultOptions,
+                        ...options,
                     })
 
                     delete _cookie[name]
