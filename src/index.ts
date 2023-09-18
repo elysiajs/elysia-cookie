@@ -128,7 +128,7 @@ export const cookie = (options: CookieOptions = {}) => {
                         path: '/',
                         expires: new Date('Thu, Jan 01 1970 00:00:00 UTC'),
                         ...defaultOptions,
-                        ...options,
+                        ...options
                     })
 
                     delete _cookie[name]
