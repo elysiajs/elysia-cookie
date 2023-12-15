@@ -4,8 +4,32 @@ import { cookie } from '../src'
 const app = new Elysia()
     .use(
         cookie({
-            secret: 'abc'
+            secret: 'Fischl von Luftschloss Narfidort'
         })
+    )
+    .get(
+        '/json',
+        ({ setCookie, unsignCookie, cookie: { council: councilSigned } }) => {
+            const council = unsignCookie(councilSigned)
+
+            if (!council.valid)
+                throw new Error('Fail to decode cookie: council')
+
+            setCookie(
+                'council',
+                JSON.stringify([
+                    {
+                        name: 'Rin',
+                        affilation: 'Adminstration'
+                    }
+                ]),
+                {
+                    signed: true
+                }
+            )
+
+            return JSON.parse(council.value)
+        }
     )
     .get('/', ({ cookie, setCookie }) => {
         console.log(cookie)

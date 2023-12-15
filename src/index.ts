@@ -38,9 +38,7 @@ export const cookie = (options: CookieOptions = {}) => {
     const isStringKey = typeof secret === 'string'
 
     return new Elysia({
-        // For deduplication to work you need to define a plugin name (or anything)
         name: '@elysiajs/cookie',
-        // (optional) define seed, if not provided plugin will only be defined once
         seed: options
     })
         .decorate('unsignCookie', ((value: string) => {
