@@ -35,8 +35,6 @@ export const cookie = (options: CookieOptions = {}) => {
         ? secretKey
         : secretKey[0]
 
-    const isStringKey = typeof secret === 'string'
-
     return new Elysia({
         name: '@elysiajs/cookie',
         seed: options
@@ -45,11 +43,11 @@ export const cookie = (options: CookieOptions = {}) => {
             if (!secret)
                 throw new Error('No secret is provided to cookie plugin')
 
-            let unsigned: false | string = isStringKey
+            let unsigned: false | string = typeof secret === 'string'
                 ? unsign(value, secret)
                 : false
 
-            if (isStringKey === false)
+            if (typeof secret === 'string')
                 for (let i = 0; i < secret.length; i++) {
                     const temp = unsign(value, secret[i])
 
