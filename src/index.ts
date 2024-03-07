@@ -1,4 +1,4 @@
-import { Elysia, Handler } from 'elysia'
+import { Elysia } from 'elysia'
 
 import { serialize, parse, type CookieSerializeOptions } from 'cookie'
 import { sign, unsign } from 'cookie-signature'
@@ -49,7 +49,7 @@ export const cookie = (options: CookieOptions = {}) => {
                 ? unsign(value, secret)
                 : false
 
-            if (isStringKey === false)
+            if (unsigned === false)
                 for (let i = 0; i < secret.length; i++) {
                     const temp = unsign(value, secret[i])
 
