@@ -1,3 +1,5 @@
+This plugin has been merged into Elysia core and is deprecated, please use [Elysia.cookie](https://elysiajs.com/patterns/cookie.html) instead
+
 # @elysiajs/cookie
 Plugin for [Elysia](https://github.com/elysiajs/elysia) that add support for reading, and setting cookie.
 
