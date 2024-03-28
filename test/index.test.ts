@@ -34,7 +34,7 @@ describe('Cookie', () => {
             })
         )
         expect(res.headers.get('set-cookie')).toBe(
-            'user=; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+            'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
         )
     })
 
