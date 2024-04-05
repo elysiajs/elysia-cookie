@@ -1,4 +1,4 @@
-import { Elysia, Handler } from 'elysia'
+import { Elysia, MaybePromise } from 'elysia'
 
 import { serialize, parse, type CookieSerializeOptions } from 'cookie'
 import { sign, unsign } from 'cookie-signature'
@@ -20,10 +20,10 @@ export interface CookieOptions extends SetCookieOptions {
     secret?: string | string[]
 }
 
-export interface CookieRequest {
-    cookie: Record<string, string>
-    setCookie: (name: string, value: string, options?: SetCookieOptions) => void
-    removeCookie: (name: string) => void
+export interface CookieRequest extends Record<string, unknown> {
+    cookie: Record<string, string>;
+    setCookie: (name: string, value: string, options?: SetCookieOptions) => void;
+    removeCookie: (name: string) => void;
 }
 
 export const cookie = (options: CookieOptions = {}) => {
@@ -32,8 +32,8 @@ export const cookie = (options: CookieOptions = {}) => {
     const secret = !secretKey
         ? undefined
         : typeof secretKey === 'string'
-        ? secretKey
-        : secretKey[0]
+            ? secretKey
+            : secretKey[0]
 
     const isStringKey = typeof secret === 'string'
 
@@ -49,7 +49,7 @@ export const cookie = (options: CookieOptions = {}) => {
                 ? unsign(value, secret)
                 : false
 
-            if (isStringKey === false)
+            if (typeof secret === 'string') //Had to change this line because TS Compiler was throwing errors
                 for (let i = 0; i < secret.length; i++) {
                     const temp = unsign(value, secret[i])
 
@@ -64,15 +64,15 @@ export const cookie = (options: CookieOptions = {}) => {
                 value: unsigned || undefined
             }
         }) as (value: string) =>
-            | {
-                  valid: true
-                  value: string
-              }
-            | {
-                  valid: false
-                  value: undefined
-              })
-        .derive((context) => {
+                | {
+                    valid: true
+                    value: string
+                }
+                | {
+                    valid: false
+                    value: undefined
+                })
+        .derive({ as: "global" }, (context): MaybePromise<CookieRequest> => {
             let _cookie: Record<string, string>
 
             const getCookie = () => {
@@ -128,7 +128,7 @@ export const cookie = (options: CookieOptions = {}) => {
 
                     delete _cookie[name]
                 }
-            } as CookieRequest
+            }
         })
 }
 
